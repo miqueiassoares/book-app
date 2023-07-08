@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  --bg-dark: rgb(19, 19, 56);
+  --bg-clear: rgb(49, 49, 125);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  color: azure;
+}
+
+body {
+  background-color: var(--bg-dark);
+  position: relative;
+}

@@ -1,5 +1,7 @@
 export default function Home() {
-  return <main>Hello</main>;
+  return (
+    <section>
+      <h1>Trending books</h1>
+    </section>
+  );
 }
-
-const vaolor = 234;
