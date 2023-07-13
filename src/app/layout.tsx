@@ -1,3 +1,4 @@
+import Footer from '@/components/footer/Footer';
 import NavBar from '@/components/navbar/NavBar';
 import type { Metadata } from 'next';
 import { Playfair_Display } from 'next/font/google';
@@ -24,10 +25,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={playfair.className}>
+      <body className={`${playfair.className} relative`}>
         <StyledComponentsRegistry>
           <NavBar />
           {children}
+          <Footer />
         </StyledComponentsRegistry>
       </body>
     </html>
