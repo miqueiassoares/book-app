@@ -1,10 +1,12 @@
 import { CgProfile } from 'react-icons/cg';
+import { IoIosSettings } from 'react-icons/io';
 import LinkTemplate from './LinkTemplate';
 
 export default function Profile() {
   return (
     <div className="flex flex-row items-center gap-16 ml-10">
       <LinkTemplate href={'/settings'} target="_blank">
+        <IoIosSettings className="h-6 w-auto" />
         Settings
       </LinkTemplate>
       <div className="flex flex-col w-max gap-1">

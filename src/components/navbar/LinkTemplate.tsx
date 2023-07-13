@@ -13,7 +13,7 @@ export default function LinkTemplate({
   return (
     <Link
       href={href}
-      className="text-sm text-violet-400 underline uppercase font-bold focus:outline-none hover:opacity-60 transition-opacity flex items-center"
+      className="text-sm text-violet-400 underline uppercase font-bold focus:outline-none hover:opacity-60 transition-opacity flex items-center gap-1"
       target={target}
     >
       {children}
