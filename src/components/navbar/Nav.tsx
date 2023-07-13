@@ -1,10 +1,10 @@
-import Link from 'next/link';
+import LinkTemplate from './LinkTemplate';
 
 export default function Nav() {
   return (
-    <nav>
-      <Link href={'/favorites'}>Favorites</Link>
-      <Link href={'/personallibrary'}>Personal library</Link>
+    <nav className="flex flex-row gap-5 items-center">
+      <LinkTemplate href="/favorites">Favorites</LinkTemplate>
+      <LinkTemplate href={'/personallibrary'}>Bookshelves</LinkTemplate>
     </nav>
   );
 }

@@ -12,13 +12,13 @@ export default function Search() {
       }}
     >
       <button type="submit" className="h-4 w-auto pl-4 pr-2 cursor-pointer">
-        <HiSearch />
+        <HiSearch className="text-violet-400" />
       </button>
       <input
         type="text"
         id="search"
         placeholder="Search"
-        className="bg-transparent p-1 outline-none text-violet-200 w-72 "
+        className="bg-transparent p-1 outline-none text-violet-200 w-72"
       />
     </Form>
   );

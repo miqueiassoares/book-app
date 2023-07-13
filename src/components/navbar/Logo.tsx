@@ -4,8 +4,8 @@ import bookImg from '../../../public/bookImg.png';
 
 export default function Logo() {
   return (
-    <Link href={'/'}>
-      <div className="flex  w-max items-cente gap-2">
+    <Link href={'/'} className="focus:outline-none">
+      <div className="flex w-max items-center gap-2">
         <Image
           src={bookImg}
           alt="Book"
