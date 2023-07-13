@@ -1,30 +1,43 @@
-import Image from 'next/image';
 import Link from 'next/link';
-import livroTemplate from '../../../public/livroTemplate.jpg';
+import { BsBookHalf } from 'react-icons/bs';
+import ImageCard from './ImageCard';
 import { CardStyle } from './styles';
+export interface ICardDataTemplate {
+  title: string;
+  subtitle: string;
+  authors: Array<string>;
+  thumbnail: string;
+  description: string;
+  publishedDate: string;
+  pageCount: number;
+  id: string;
+}
 
-export default function Card() {
+export default function Card({
+  title,
+  subtitle,
+  authors,
+  thumbnail,
+  description,
+  publishedDate,
+  pageCount,
+  id
+}: ICardDataTemplate) {
   return (
-    <CardStyle>
-      <Image
-        src={livroTemplate}
-        alt="Daisy Jones And The Six"
-        width={165.5}
-        height={250}
-        className="rounded-md"
-      />
+    <CardStyle key={id}>
+      <ImageCard src={thumbnail} alt={title} />
       <div className="flex flex-col w-full p-2 relative">
-        <h2 className="text-2xl text-violet-300">
-          Daisy Jones And The Six - Uma história de amor e música
+        <h2 className="text-2xl text-violet-300 line-clamp-2">
+          {title} {subtitle ? `- ${subtitle}` : ''}
         </h2>
         <p className="text-white mt-3">
-          <span className="text-violet-400">Taylor Jenkins Reid</span> - 2019
+          <span className="text-violet-400">{authors[0]}</span>{' '}
+          {publishedDate
+            ? `- ${publishedDate.replace(/^(\d{4})-\d{2}-\d{2}/, '$1')}`
+            : ''}
         </p>
         <p className="text-base mt-1 text-violet-100 line-clamp-6">
-          A gripping novel about the whirlwind rise of an iconic 1970s rock
-          group and their beautiful lead singer, revealing the mystery behind
-          their infamous breakup—from the author of The Seven Husbands of Evelyn
-          Hugo, Malibu Rising, and Carrie . Hugo, Malibu Rising, and Carrie .
+          {description}
         </p>
         <Link href={'/book/${}'} className="w-max absolute bottom-0 ">
           <button
@@ -34,6 +47,10 @@ export default function Card() {
             More about
           </button>
         </Link>
+        <p className="flex gap-1 text-sm text-violet-500 items-center absolute bottom-0 right-0">
+          <BsBookHalf />
+          {pageCount} pages
+        </p>
       </div>
     </CardStyle>
   );
