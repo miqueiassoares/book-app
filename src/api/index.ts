@@ -4,9 +4,9 @@ const api = axios.create({
   baseURL: process.env.NEXT_BASE_URL
 });
 
-export const getHome = async () => {
+export const getSuggestions = async () => {
   const data = await api
-    .get('/volumes?q=javascript')
+    .get('/volumes?q=flowers')
     .then((response) => {
       return response.data;
     })
@@ -16,5 +16,20 @@ export const getHome = async () => {
         status: 400
       };
     });
-  return data;
+  return data.items;
+};
+
+export const getQuery = async (query: string) => {
+  const data = await api
+    .get(`/volumes?q=${query}`)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((erro) => {
+      return {
+        message: 'erro na requisição',
+        status: 404
+      };
+    });
+  return data.items;
 };

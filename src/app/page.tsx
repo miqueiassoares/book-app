@@ -1,16 +1,16 @@
-import { getHome } from '@/api';
-import Card from '@/components/books/Card';
+import { getSuggestions } from '@/api';
+import Card from '@/components/book/Card';
 import Topic from '@/components/home/Topic';
 
 export default async function Home() {
-  const data = await getHome();
+  const data = await getSuggestions();
 
   return (
-    <main className="max-w-3xl m-auto mt-8">
-      <section>
+    <section className="max-w-3xl m-auto mt-8">
+      <main>
         <Topic>Suggestions</Topic>
         <div className="pt-8 flex flex-col gap-4">
-          {data.items.map(
+          {data.map(
             ({
               id,
               volumeInfo: {
@@ -20,7 +20,7 @@ export default async function Home() {
                 description,
                 pageCount,
                 publishedDate,
-                imageLinks: { thumbnail }
+                imageLinks
               }
             }: any) => {
               return (
@@ -32,13 +32,13 @@ export default async function Home() {
                   id={id}
                   pageCount={pageCount}
                   publishedDate={publishedDate}
-                  thumbnail={thumbnail}
+                  image={imageLinks}
                 />
               );
             }
           )}
         </div>
-      </section>
-    </main>
+      </main>
+    </section>
   );
 }

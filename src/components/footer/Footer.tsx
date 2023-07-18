@@ -16,7 +16,10 @@ export default function Footer() {
           Google Books Api
         </LinkTemplate>
         -
-        <LinkTemplate href="https://github.com/miqueiassoares" target="_blank">
+        <LinkTemplate
+          href="https://github.com/miqueiassoares/book-app"
+          target="_blank"
+        >
           <BsGithub className="h-4 w-auto" />
           Git Hub
         </LinkTemplate>

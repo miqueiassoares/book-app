@@ -9,8 +9,4 @@ export const CardStyle = styled.div`
   border-radius: 0.5rem;
   padding: 0.5rem;
   display: flex;
-  & img {
-    height: 300px;
-    width: auto;
-  }
 `;

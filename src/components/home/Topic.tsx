@@ -5,7 +5,7 @@ export default function Topic({ children }: { children: ReactNode }) {
   return (
     <h1 className="flex flex-row items-center gap-2 text-violet-400">
       <BiSolidRightArrow />
-      <span className="text-lg">{children}</span>
+      <span className="text-lg capitalize">{children}</span>
     </h1>
   );
 }
