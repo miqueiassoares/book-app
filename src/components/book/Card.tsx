@@ -2,49 +2,69 @@ import Link from 'next/link';
 import { BsBookHalf } from 'react-icons/bs';
 import ImageCard from './ImageCard';
 import { CardStyle } from './styles';
+
 export interface ICardDataTemplate {
-  title: string;
-  subtitle: string;
-  authors: Array<string>;
-  description: string;
-  publishedDate: string;
-  pageCount: number;
-  id: string;
-  image: { thumbnail: string; smallThumbnail: string } | undefined;
+  bookData: {
+    id: string;
+    volumeInfo: {
+      title: string;
+      subtitle: string;
+      authors: string[];
+      description: string;
+      pageCount: number;
+      publishedDate: string;
+      imageLinks: { thumbnail: string; smallThumbnail: string };
+    };
+    saleInfo: { isEbook: boolean };
+  };
 }
 
 export default function Card({
-  title,
-  subtitle,
-  authors,
-  image,
-  description,
-  publishedDate,
-  pageCount,
-  id
+  bookData: {
+    id,
+    volumeInfo: {
+      title,
+      subtitle,
+      authors,
+      description,
+      pageCount,
+      publishedDate,
+      imageLinks
+    },
+    saleInfo: { isEbook }
+  }
 }: ICardDataTemplate) {
   return (
     <CardStyle key={id}>
-      {image?.thumbnail ? (
-        <ImageCard src={image.thumbnail} alt={title} />
+      {imageLinks?.thumbnail ? (
+        <ImageCard src={imageLinks.thumbnail} alt={title} />
       ) : (
         <ImageCard src={''} alt={title} />
       )}
       <div className="flex flex-col w-full p-2 relative">
-        <h2 className="text-2xl text-violet-300 line-clamp-2">
+        <h2 className="text-2xl text-blue-300 line-clamp-2">
           {title} {subtitle ? `- ${subtitle}` : ''}
         </h2>
         <p className="text-white mt-2">
-          <span className="text-violet-400">
-            {authors
-              ? authors.map((author) => `${author} `)
-              : 'Author not found'}
-          </span>
-          {publishedDate
-            ? `- ${publishedDate.replace(/^(\d{4})-\d{2}-\d{2}/, '$1')}`
-            : ''}
+          {authors ? (
+            <span className="text-violet-400">{authors[0]}</span>
+          ) : (
+            <span className="text-red-500">Author not found</span>
+          )}
+
+          {publishedDate && (
+            <span className="text-xs">
+              {' '}
+              - {publishedDate.replace(/^(\d{4})-\d{2}-\d{2}/, '$1')}{' '}
+            </span>
+          )}
+          {isEbook && (
+            <span className="text-yellow-400 text-xs font-bold uppercase">
+              | Ebook
+            </span>
+          )}
         </p>
-        <p className="text-base mt-0 text-violet-100 line-clamp-6">
+        <p className="mt-1 text-violet-100 line-clamp-6 text-sm">
           {description ? (
             description
           ) : (
@@ -53,7 +73,7 @@ export default function Card({
             </span>
           )}
         </p>
-        <Link href={'/book/${}'} className="w-max absolute bottom-0 ">
+        <Link href={`/book/${id}`} className="w-max absolute bottom-0 ">
           <button
             type="button"
             className="text-violet-100 bg-violet-500 cursor-pointer p-2 rounded hover:opacity-60 transition-opacity"
@@ -65,8 +85,7 @@ export default function Card({
           {pageCount ? (
             <>
               <BsBookHalf />
-              {pageCount}
-              pages
+              {`${pageCount} pages`}
             </>
           ) : (
             <span className="text-red-500">Unknown number of pages</span>

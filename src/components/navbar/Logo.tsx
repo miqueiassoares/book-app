@@ -13,7 +13,7 @@ export default function Logo() {
           height={32}
           className="w-auto h-8"
         />
-        <h1 className="text-3xl text-violet-200">BookTrove</h1>
+        <h1 className="text-3xl text-violet-300">BookTrove</h1>
       </div>
     </Link>
   );

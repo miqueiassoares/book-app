@@ -7,6 +7,25 @@
   --bg-clear: rgb(49, 49, 125);
 }
 
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(205, 205, 205);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-dark);
+  transition: opacity 0.2s;
+  border-radius: 10px;
+  border: 3px solid rgb(205, 205, 205);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.7;
+}
+
 * {
   margin: 0;
   padding: 0;

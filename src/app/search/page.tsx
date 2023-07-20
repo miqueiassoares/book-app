@@ -15,33 +15,9 @@ export default async function Search({
         <Topic>{searchParams.q}</Topic>
         <div className="pt-8 flex flex-col gap-4">
           {data &&
-            data.map(
-              ({
-                id,
-                volumeInfo: {
-                  title,
-                  subtitle,
-                  authors,
-                  description,
-                  pageCount,
-                  publishedDate,
-                  imageLinks
-                }
-              }: any) => {
-                return (
-                  <Card
-                    title={title}
-                    subtitle={subtitle}
-                    authors={authors}
-                    description={description}
-                    id={id}
-                    pageCount={pageCount}
-                    publishedDate={publishedDate}
-                    image={imageLinks}
-                  />
-                );
-              }
-            )}
+            data.map((bookData: any) => {
+              return <Card bookData={bookData} />;
+            })}
         </div>
       </main>
     </section>
