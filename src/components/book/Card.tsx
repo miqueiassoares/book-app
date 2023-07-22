@@ -49,7 +49,7 @@ export default function Card({
           {authors ? (
             <span className="text-violet-400">{authors[0]}</span>
           ) : (
-            <span className="text-red-500">Author not found</span>
+            <span className="text-red-500">Author not found </span>
           )}
 
           {publishedDate && (
