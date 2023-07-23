@@ -10,8 +10,13 @@ const Header = styled.header`
   border-radius: 0.5rem;
   width: max-content;
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 5rem;
+  @media screen and (max-width: 1200px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
 `;
 
 const Form = styled.form`

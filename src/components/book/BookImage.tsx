@@ -1,19 +1,5 @@
-'use client';
-
 import Image from 'next/image';
-import styled from 'styled-components';
-
-const NotFound = styled.div`
-  background-color: #60418f;
-  color: white;
-  height: auto;
-  min-height: 288px;
-  min-width: 192px;
-  border-radius: 0.375rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
+import { NotFoundImageBook } from './styles';
 
 export default function BookImage({
   image,
@@ -35,7 +21,7 @@ export default function BookImage({
           />
         </div>
       ) : (
-        <NotFound>Image not found</NotFound>
+        <NotFoundImageBook>Image not found</NotFoundImageBook>
       )}
     </div>
   );

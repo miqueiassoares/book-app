@@ -34,7 +34,7 @@ export default function Search() {
           setQuery(e.target.value);
         }}
         value={query}
-        className="bg-transparent p-1 outline-none text-violet-200 w-72"
+        className="bg-transparent p-1 outline-none text-violet-200 w-72 mbx:w-max"
       />
     </Form>
   );

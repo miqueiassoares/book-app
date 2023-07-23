@@ -4,7 +4,7 @@ import LinkTemplate from './LinkTemplate';
 
 export default function Nav() {
   return (
-    <nav className="flex flex-row gap-5 items-center">
+    <nav className="flex flex-row gap-5 items-center mb:hidden">
       <LinkTemplate href="/favorites">
         <AiFillStar className="h-5 w-auto" />
         Favorites

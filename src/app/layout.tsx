@@ -14,8 +14,8 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s',
-    default: 'Home'
+    template: '%s | BookTrove',
+    default: 'Home | BookTrove'
   },
   description:
     'Discover the world of literature at your fingertips. BookVerse is your go-to online destination for exploring the latest and most popular books in the market. With our intuitive interface, you can easily navigate through an extensive collection of titles that are currently trending and delve into the stories that captivate readers worldwide'

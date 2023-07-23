@@ -1,9 +1,9 @@
 import { getBook, getQuery } from '@/api';
 import Card from '@/components/book/Card';
+import { BookInfoContainer } from '@/components/book/styles';
 import Topic from '@/components/home/Topic';
 import { Metadata } from 'next';
-import BookInfo from '../BookInfo';
-import { BookInfoContainer } from '../styles';
+import BookInfo from '../../../components/book/BookInfo';
 
 type TProps = {
   params: { id: string };
@@ -16,7 +16,7 @@ export async function generateMetadata({ params }: TProps): Promise<Metadata> {
     volumeInfo: { title, description }
   } = await getBook(id);
   return {
-    title: `${title} | Book`,
+    title: `${title} | BookTrove`,
     description: description
   };
 }

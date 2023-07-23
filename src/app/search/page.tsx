@@ -1,12 +1,23 @@
 import { getQuery } from '@/api';
 import Card from '@/components/book/Card';
 import Topic from '@/components/home/Topic';
+import { Metadata } from 'next';
 
-export default async function Search({
-  searchParams
-}: {
+type TProps = {
   searchParams: { q: string };
-}) {
+};
+
+export async function generateMetadata({
+  searchParams
+}: TProps): Promise<Metadata> {
+  const query = searchParams.q;
+  return {
+    title: `${query}`,
+    description: query
+  };
+}
+
+export default async function Search({ searchParams }: TProps) {
   const data = await getQuery(searchParams.q);
 
   return (

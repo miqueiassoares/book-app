@@ -10,4 +10,7 @@ export const FooterStyle = styled.footer`
   padding: 0.5rem;
   margin: 4rem auto 0.5rem;
   max-width: 700px;
+  @media screen and (max-width: 700px) {
+    border-radius: 0;
+  }
 `;

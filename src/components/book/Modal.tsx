@@ -91,7 +91,7 @@ export default function Modal({
                 </h1>
                 <button
                   onClick={(e) => changeModalState(e, true)}
-                  className="hover:bg-violet-400 p-2 rounded-full transition-colors"
+                  className="p-2 rounded-full"
                 >
                   <GrClose className="h-5 w-auto" />
                 </button>

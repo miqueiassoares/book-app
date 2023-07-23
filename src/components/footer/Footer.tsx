@@ -7,15 +7,15 @@ import { FooterStyle } from './styles';
 export default function Footer() {
   return (
     <FooterStyle>
-      <div className="text-violet-500 flex gap-2 m-auto w-max">
+      <div className="text-violet-500 flex gap-6 m-auto w-max mbx:grid grid-cols-2 mbx:gap-4">
         <LinkTemplate
           href="https://developers.google.com/books/docs/overview"
           target="_blank"
         >
           <BsGoogle />
-          Google Books Api
+          Books Api
         </LinkTemplate>
-        -
+
         <LinkTemplate
           href="https://github.com/miqueiassoares/book-app"
           target="_blank"
@@ -23,12 +23,12 @@ export default function Footer() {
           <BsGithub className="h-4 w-auto" />
           Git Hub
         </LinkTemplate>
-        -
+
         <LinkTemplate href="/about">
           <FaSheetPlastic />
           About
         </LinkTemplate>
-        -
+
         <LinkTemplate href="/settings" target="_blank">
           <IoIosSettings className="h-5 w-auto" />
           Settings
