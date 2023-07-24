@@ -8,7 +8,7 @@ const api = axios.create({
 
 export const getSuggestions = async () => {
   const data = await api
-    .get(`/volumes?q=flowers`)
+    .get(`/volumes?q=harrypotter`)
     .then((response) => response.data)
     .catch((error) => error);
   return data.items;

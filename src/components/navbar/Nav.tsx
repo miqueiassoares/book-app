@@ -9,10 +9,10 @@ export default function Nav() {
         <AiFillStar className="h-5 w-auto" />
         Favorites
       </LinkTemplate>
-      <LinkTemplate href={'/personallibrary'}>
+      <LinkTemplate href={'/shelves'}>
         {' '}
         <GiBookshelf className="h-5 w-auto" />
-        Bookshelves
+        Shelves
       </LinkTemplate>
     </nav>
   );

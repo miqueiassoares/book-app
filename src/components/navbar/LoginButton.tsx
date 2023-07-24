@@ -1,8 +1,12 @@
+import Link from 'next/link';
 import { CgProfile } from 'react-icons/cg';
 
 export default function LoginButton({ avatar }: { avatar?: boolean }) {
   return (
-    <div className="flex flex-col w-max gap-1 items-center hover:opacity-70 transition-opacity cursor-pointer ">
+    <Link
+      href={'/login'}
+      className="flex flex-col w-max gap-1 items-center hover:opacity-70 transition-opacity cursor-pointer "
+    >
       {avatar && (
         <div>
           <CgProfile className="w-auto h-12 text-violet-50 bg-blue-400 rounded-full" />
@@ -14,6 +18,6 @@ export default function LoginButton({ avatar }: { avatar?: boolean }) {
       >
         Login
       </button>
-    </div>
+    </Link>
   );
 }
