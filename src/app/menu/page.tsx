@@ -9,7 +9,7 @@ import { IoIosSettings } from 'react-icons/io';
 
 export default function Menu() {
   return (
-    <div className="absolute top-0 left-0 h-screen w-screen z-50 bg-black flex flex-row items-center justify-center">
+    <div className="absolute top-0 left-0  min-h-screen h-full w-screen z-50 bg-black flex flex-row items-center justify-center">
       <menu className="flex flex-col items-center">
         <Logo />
         <div className="mt-2 flex flex-row gap-3 flex-wrap justify-center">
