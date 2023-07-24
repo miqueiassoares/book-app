@@ -14,7 +14,7 @@ export default function LoginButton({ avatar }: { avatar?: boolean }) {
       )}
       <button
         type="button"
-        className="bg-blue-400 text-violet-50 pr-2 pl-2 rounded-sm text-sm cursor-pointer focus:outline-none"
+        className="bg-blue-400 text-violet-50 pr-2 pl-2 rounded-sm text-sm cursor-pointer focus:outline-none uppercase font-bold"
       >
         Login
       </button>
