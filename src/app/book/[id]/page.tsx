@@ -34,12 +34,10 @@ export default async function Book({ params }: TProps) {
         <main>
           <Topic>Similar titles</Topic>
           <div className="pt-8 flex flex-col gap-4">
-            {similarData ? (
+            {similarData && (
               similarData
                 .filter(({ id }: { id: string }) => id !== params.id)
                 .map((bookData: any) => <Card bookData={bookData} />)
-            ) : (
-              <></>
             )}
           </div>
         </main>

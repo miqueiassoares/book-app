@@ -23,15 +23,15 @@ const api = axios.create({
 export const getSuggestions = async () => {
   const books = getBookCategory();
   const data = await api
-    .get(`/volumes?q=${books}`)
+    .get(`/volumes?q=${books}&maxResults=40`)
     .then((response) => response.data)
     .catch((error) => error);
   return data.items;
 };
 
-export const getQuery = async (query: string) => {
+export const getQuery = async (query: string, similars=false) => {
   const data = await api
-    .get(`/volumes?q=${query}`)
+    .get(`/volumes?q=${query}&maxResults=${similars ? '10' : '40'}`)
     .then((response) => response.data)
     .catch((error) => error);
   return data.items;
