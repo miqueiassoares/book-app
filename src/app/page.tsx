@@ -10,11 +10,7 @@ export default async function Home() {
       <main>
         <Topic>Suggestions</Topic>
         <div className="pt-8 flex flex-col gap-4">
-          {data ? (
-            data.map((bookData: any) => <Card bookData={bookData} />)
-          ) : (
-            <></>
-          )}
+          {data && data.map((bookData: any) => <Card bookData={bookData} />)}
         </div>
       </main>
     </section>

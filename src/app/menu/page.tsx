@@ -1,4 +1,5 @@
 import Logo from '@/components/navbar/Logo';
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { AiFillHome, AiFillStar } from 'react-icons/ai';
 import { BiSolidLogInCircle } from 'react-icons/bi';
@@ -6,6 +7,13 @@ import { BsGithub, BsGoogle } from 'react-icons/bs';
 import { FaSheetPlastic } from 'react-icons/fa6';
 import { GiBookshelf } from 'react-icons/gi';
 import { IoIosSettings } from 'react-icons/io';
+
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: 'Menu',
+    description: 'Menu'
+  };
+}
 
 export default function Menu() {
   return (
