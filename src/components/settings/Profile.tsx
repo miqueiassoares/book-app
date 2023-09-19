@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
+import { BiLogOut } from 'react-icons/bi';
+import { BsFillTrashFill } from 'react-icons/bs';
 
 interface IFormInput {
   fullName: string;
@@ -95,7 +97,7 @@ export default function Profile() {
             {errors.username?.message}
           </span>
         )}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-2 semb:flex semb:flex-col">
           <div className="flex flex-col">
             <label htmlFor="gender">Edit your gender:</label>
             <select
@@ -208,12 +210,28 @@ export default function Profile() {
             {errors.password?.message}
           </span>
         )}
-        <button
-          type="submit"
-          className="bg-yellow-500 p-2 rounded-lg w-56 font-bold cursor-pointer hover:opacity-70 mt-4"
-        >
-          Save your changes
-        </button>
+        <div className="flex flex-row gap-3  mt-4 semb:flex-wrap">
+          <button
+            type="submit"
+            className="border-b-2 transition-all  border-purple-500 bg-transparent hover:bg-purple-500 p-2 rounded-lg w-36 font-bold cursor-pointer"
+          >
+            Save
+          </button>
+          <button
+            type="button"
+            className="bg-transparent p-2 rounded-lg transition-all font-bold cursor-pointer hover:bg-sky-500 border-b-2 border-sky-500 flex flex-row gap-2 items-center w-max"
+          >
+            <span>log out</span>
+            <BiLogOut />
+          </button>
+          <button
+            type="button"
+            className="bg-transparent p-2 rounded-lg transition-all font-bold cursor-pointer border-b-2 border-red-500 hover:bg-red-500 flex flex-row gap-2 items-center w-max"
+          >
+            <span>Delete account</span>
+            <BsFillTrashFill />
+          </button>
+        </div>
       </form>
     </div>
   );

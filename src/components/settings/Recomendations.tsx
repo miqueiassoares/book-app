@@ -7,7 +7,7 @@ const defaultVariables = ['harrypotter', 'gameofthrones', 'bigbang', 'books'];
 export default function Recomendations() {
   const [variables, setVariables] = useState<string[]>(defaultVariables);
   const [variable, setVariable] = useState<string>('');
-  const [maxResults, setMaxResults] = useState<number>(40);
+  const [maxResults, setMaxResults] = useState<number>(15);
 
   const handleDeleteVariable = (indexToDelete: number) => {
     const newVariables = [...variables];
@@ -29,7 +29,10 @@ export default function Recomendations() {
         Here you can edit your recommendation variables and the number of books
         to return.
       </h2>
-      <form className="flex flex-col gap-2 mt-2">
+      <form
+        className="flex flex-col gap-2 mt-2"
+        onSubmit={(event) => event.preventDefault()}
+      >
         <label htmlFor="maxresults">
           Number of books returned (40 is the maximum number )
         </label>
@@ -44,13 +47,19 @@ export default function Recomendations() {
             value={maxResults}
             onChange={(event) => setMaxResults(Number(event.target.value))}
           />
-          <button className="p-1 bg-blue-400 text-white rounded" type="button">
+          <button
+            className="p-1 bg-purple-500 text-white rounded"
+            type="button"
+          >
             Save
           </button>
         </div>
       </form>
 
-      <form className="mt-4 flex flex-col">
+      <form
+        className="mt-4 flex flex-col"
+        onSubmit={(event) => event.preventDefault()}
+      >
         <label htmlFor="variable">Create recommendation variable.</label>
         <div className="flex flex-row gap-1">
           <input
@@ -59,10 +68,11 @@ export default function Recomendations() {
             value={variable}
             className="text-black rounded p-1"
             maxLength={70}
+            placeholder="Example: harrypotter"
             onChange={(event) => setVariable(event.target.value)}
           />
           <button
-            className="bg-blue-400 text-white p-1 rounded"
+            className="bg-purple-500 text-white p-1 rounded"
             type="button"
             onClick={() => createVariable()}
           >
@@ -79,8 +89,8 @@ export default function Recomendations() {
           variables.map((variable, index) => {
             return (
               <div
-                key={variable}
-                className="bg-slate-700 text-white p-2 flex gap-2 justify-between rounded"
+                key={`${variable}key${index}`}
+                className="bg-purple-500 text-white p-2 flex gap-2 justify-between rounded"
               >
                 <span>{variable}</span>
                 <button

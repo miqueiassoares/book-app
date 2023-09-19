@@ -3,25 +3,17 @@
 import Logo from '@/components/navbar/Logo';
 import Profile from '@/components/settings/Profile';
 import Recomendations from '@/components/settings/Recomendations';
-import { Metadata } from 'next';
 import { useState } from 'react';
-
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    title: 'Settings',
-    description: 'Your settings.'
-  };
-}
 
 export default function Settings() {
   const [display, setDisplay] = useState(true);
   return (
-    <div className="absolute top-0 left-0  min-h-screen h-full w-screen z-50 bg-black text-white">
+    <div className="absolute top-0 left-0  min-h-screen h-max w-screen z-50 bg-black text-white">
       <div className="w-max mt-8 m-auto">
         <Logo />
       </div>
-      <div className="max-w-3xl m-auto mt-8 flex flex-row gap-3">
-        <menu className="flex flex-col gap-1">
+      <div className="max-w-3xl m-auto mt-8 pb-5 flex flex-row gap-3 semb:flex-col semb:p-4">
+        <menu className="flex flex-col gap-1 semb:flex-row semb:m-auto semb:w-max semb:gap-3">
           <button
             type="button"
             onClick={() => setDisplay((prevState) => !prevState)}

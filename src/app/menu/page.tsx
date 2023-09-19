@@ -22,11 +22,18 @@ export default function Menu() {
         <Logo />
         <div className="mt-2 flex flex-row gap-3 flex-wrap justify-center">
           <Link
-            href={'/login'}
+            href={'/signin'}
             className="flex flex-row gap-1 items-center uppercase bg-violet-300 text-black p-1 pr-2 pl-2 rounded-md font-bold text-base hover:opacity-70 transition-opacity"
           >
             <BiSolidLogInCircle className="h-5 w-auto" />
-            Login
+            Sign In
+          </Link>
+          <Link
+            href={'/signup'}
+            className="flex flex-row gap-1 items-center uppercase bg-violet-300 text-black p-1 pr-2 pl-2 rounded-md font-bold text-base hover:opacity-70 transition-opacity"
+          >
+            <BiSolidLogInCircle className="h-5 w-auto" />
+            Sign Up
           </Link>
           <Link
             href={'/'}

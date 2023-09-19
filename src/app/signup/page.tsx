@@ -204,7 +204,7 @@ export default function SignUp() {
             type="submit"
             className="bg-yellow-500 p-2 rounded-lg w-56 font-bold cursor-pointer hover:opacity-70 mt-4"
           >
-            Sign In
+            Sign Up
           </button>
         </fieldset>
       </form>

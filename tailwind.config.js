@@ -15,7 +15,8 @@ module.exports = {
     },
     screens: {
       mb: { max: '920px' },
-      mbx: { max: '630px' }
+      mbx: { max: '630px' },
+      semb: { max: '775px' }
     },
     plugins: []
   }
