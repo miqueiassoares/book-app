@@ -2,19 +2,43 @@
 
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { signUpUser } from '@/api/user';
+import { useRouter } from 'next/navigation';
 
 interface IFormInput {
-  fullName: string;
+  fullname: string;
   username: string;
   gender: string;
   email: string;
   password: string;
-  age: number;
+  dateofbirth: Date;
 }
+
+function dateValidation(dateofbirth: Date) {
+  const userDate = new Date(dateofbirth);
+  
+  const dateNow = new Date();
+  
+  
+  const diff = Number(dateNow) - Number(userDate);
+  const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+  
+  return age;
+}
+
 
 export default function SignUp() {
   const [showPassword, setShowPassword] = useState(false);
+  const [DateOfBirthStatus, setDateOfBirthStatus] = useState("");
+  const [errorSignUp, setErrorSignUp] = useState('');
+  const router = useRouter();
+
+  useEffect(() => {
+    if (localStorage.getItem('userInfo')) {
+      router.push('/')
+    }
+  }, [])
 
   const {
     register,
@@ -22,7 +46,30 @@ export default function SignUp() {
     formState: { errors }
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+
+    setErrorSignUp('')
+    const age = dateValidation(data.dateofbirth);
+
+    if (age <= 12 || age >= 119) {
+      setDateOfBirthStatus("Invalid date.");
+      return;
+    }
+
+    const res = await signUpUser(data);
+
+    if (typeof res === 'number') {
+      localStorage.setItem('userInfo', JSON.stringify({
+        ...data,
+        userid: Number(res)
+      }))
+
+      router.push('/signin');
+    } else {
+      setErrorSignUp('Unable to register. It is likely that this email or username is already being used by someone else.')
+    }
+
+  };
 
   return (
     <section className="max-w-3xl m-auto mt-8">
@@ -38,7 +85,7 @@ export default function SignUp() {
           <input
             id="name"
             className="text-black text-sm p-1 rounded-md"
-            {...register('fullName', {
+            {...register('fullname', {
               required: 'Please enter your full name.',
               maxLength: {
                 value: 100,
@@ -55,9 +102,9 @@ export default function SignUp() {
             })}
             placeholder="Full name"
           />
-          {errors.fullName && (
+          {errors.fullname && (
             <span className="text-xs text-red-800 underline font-bold">
-              {errors.fullName?.message}
+              {errors.fullname?.message}
             </span>
           )}
           <label htmlFor="username">Enter your username:</label>
@@ -95,38 +142,45 @@ export default function SignUp() {
                 {...register('gender')}
                 className="text-black text-sm p-1 rounded-md"
               >
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
               </select>
             </div>
             <div className="flex flex-col">
-              <label htmlFor="age">Enter your Age:</label>
+              <label htmlFor="dateofbirth">Date of birth:</label>
               <input
-                id="age"
+                id="dateofbirth"
                 className="text-black text-sm p-1 rounded-md"
-                {...register('age', {
-                  required: 'Please enter your age.',
-                  max: {
-                    value: 120,
-                    message: 'Please enter a valid age.'
-                  },
-                  min: {
-                    value: 13,
-                    message:
-                      'You must be over 13 years old to register on this platform.'
-                  },
-                  pattern: {
-                    value: /^[0-9]+$/,
-                    message: 'Age must be valid.'
+                {...register('dateofbirth', {
+                  required: 'Date of birth is required.',
+                  valueAsDate: true,
+                  onChange: (event: React.ChangeEvent<HTMLInputElement>) => {
+                    const age = dateValidation(new Date(event.target.value))
+                    
+                    if (age <= 12) {
+                      setDateOfBirthStatus("You must be at least 13 years old to use Booktrove");
+                      return
+                    }
+                    if (age >= 120) {
+                      setDateOfBirthStatus("Enter a valid age.");
+                      return
+                    }
+                    
+                    setDateOfBirthStatus("")
                   }
                 })}
-                type="number"
-                placeholder="Age"
+                type="date"
+                placeholder="Date of birth"
               />
-              {errors.age && (
+              {errors.dateofbirth && (
                 <span className="text-xs text-red-800 underline font-bold">
-                  {errors.age?.message}
+                  {errors.dateofbirth?.message}
+                </span>
+              )}
+              {DateOfBirthStatus.length > 0 && (
+                <span className="text-xs text-red-800 underline font-bold">
+                  {DateOfBirthStatus}
                 </span>
               )}
             </div>
@@ -206,6 +260,11 @@ export default function SignUp() {
           >
             Sign Up
           </button>
+          {errorSignUp && (
+            <span className="text-xs text-red-800 underline font-bold">
+              {errorSignUp}
+            </span>
+          )}
         </fieldset>
       </form>
     </section>
