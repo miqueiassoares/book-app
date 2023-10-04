@@ -2,17 +2,22 @@
 import { useState } from 'react';
 import { BsFillTrashFill } from 'react-icons/bs';
 
-const defaultVariables = ['harrypotter', 'gameofthrones', 'bigbang', 'books'];
-
 export default function Recomendations() {
-  const [variables, setVariables] = useState<string[]>(defaultVariables);
+  if (!localStorage.getItem('recomendations')) {
+    localStorage.setItem('recomendations', JSON.stringify(['harrypotter', 'gameofthrones', 'bigbang', 'books']));
+    localStorage.setItem('maxResults', String(15));
+  }
+
+  const [variables, setVariables] = useState<string[]>(JSON.parse(String(localStorage.getItem('recomendations'))));
   const [variable, setVariable] = useState<string>('');
-  const [maxResults, setMaxResults] = useState<number>(15);
+  const [maxResults, setMaxResults] = useState<number>(localStorage.getItem('maxResults') ?  JSON.parse(String(localStorage.getItem('maxResults'))) : 15 );
 
   const handleDeleteVariable = (indexToDelete: number) => {
     const newVariables = [...variables];
     newVariables.splice(indexToDelete, 1);
     setVariables(newVariables);
+    localStorage.removeItem('recomendations');
+    localStorage.setItem('recomendations', JSON.stringify(newVariables));
   };
 
   const createVariable = () => {
@@ -20,6 +25,8 @@ export default function Recomendations() {
     if (variable.length === 0) return;
     const newVariables = [...variables, variable];
     setVariables(newVariables);
+    localStorage.removeItem('recomendations')
+    localStorage.setItem('recomendations', JSON.stringify(newVariables))
     setVariable('');
   };
 
@@ -45,20 +52,22 @@ export default function Recomendations() {
             max={40}
             min={1}
             value={maxResults}
-            onChange={(event) => setMaxResults(Number(event.target.value))}
+            onChange={(event) => setMaxResults(() => {
+              if (Number(event.target.value) <= 0 || Number(event.target.value) > 40) return 15;
+              localStorage.removeItem('maxResults');
+              localStorage.setItem('maxResults', String(event.target.value));
+              return Number(event.target.value);
+            })}
           />
-          <button
-            className="p-1 bg-purple-500 text-white rounded"
-            type="button"
-          >
-            Save
-          </button>
         </div>
       </form>
 
       <form
         className="mt-4 flex flex-col"
-        onSubmit={(event) => event.preventDefault()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          createVariable();
+        }}
       >
         <label htmlFor="variable">Create recommendation variable.</label>
         <div className="flex flex-row gap-1">
@@ -71,13 +80,7 @@ export default function Recomendations() {
             placeholder="Example: harrypotter"
             onChange={(event) => setVariable(event.target.value)}
           />
-          <button
-            className="bg-purple-500 text-white p-1 rounded"
-            type="button"
-            onClick={() => createVariable()}
-          >
-            Create
-          </button>
+          <button type="submit" className='cursor-pointer p-1 bg-purple-500 rounded text-white'>Save</button>
         </div>
       </form>
 
