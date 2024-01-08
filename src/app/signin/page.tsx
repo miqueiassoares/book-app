@@ -61,7 +61,8 @@ export default function SignIn() {
         localStorage.setItem("userInfo", JSON.stringify(res.userData));
       }
       
-      router.push('/')
+      router.push('/');
+      location.reload();
       return;
     }
 

@@ -57,7 +57,17 @@ export const signInUser = async (userData: ISignInData) => {
 export const getDataUser = async (id: number, jwt: string) => { 
   
   const data = await api
-    .get(`/user${id}` , { headers: config('GET', jwt)})
+    .get(`/user/${id}` , { headers: config('GET', jwt)})
+    .then((response) => response.data)
+    .catch((error) => error);
+  return data;
+};
+
+export const deleteUser = async (id: number, jwt: string) => { 
+  console.log(id);
+  
+  const data = await api
+    .delete(`/user/${id}` , { headers: config('DELETE', jwt)})
     .then((response) => response.data)
     .catch((error) => error);
   return data;

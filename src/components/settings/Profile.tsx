@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { BsFillTrashFill } from 'react-icons/bs';
 import ButtonComponent from '../navbar/ButtonComponent';
+import { deleteUser } from '@/api/user';
 
 interface IFormInput {
   fullname: string;
@@ -14,6 +16,7 @@ interface IFormInput {
   email: string;
   password: string;
   dateofbirth: Date | string;
+  id: number;
 }
 
 interface IFormInputOptional {
@@ -32,6 +35,7 @@ export default function Profile() {
   const [newData, setNewData] = useState<IFormInputOptional | undefined>({});
   const [saveOn, setSaveOn] = useState(false);
   const [alert, setAlert] = useState(false);
+  const router = useRouter();
 
 
   const {
@@ -50,6 +54,20 @@ export default function Profile() {
   const logOut = () => {
     localStorage.clear();
     location.reload();
+  }
+
+  const deleteBooktroveAcount = async () => {
+    const jwt = localStorage.getItem('jwt_token');
+    
+    if (userData) {
+      
+      await deleteUser(userData.id, jwt ? jwt : '');
+      
+      localStorage.clear();
+      router.push('/');
+      location.reload();
+    }
+    
   }
   
   function dateValidation(dateofbirth: Date) {
@@ -366,12 +384,12 @@ export default function Profile() {
               </div>
             </form>
             {alert && (
-              <div className='absolute top-0 left-0 o z-50 bg-black w-screen h-screen flex justify-center items-center'>
-                <div>
-                  <p>By proceeding with this action, all data including the account will be deleted from the website and will never be recovered again.</p>
-                  <div>
-                    <button onClick={() => setAlert(false)}>Cancel</button>
-                    <button>Delete</button>
+              <div className='absolute top-0 left-0 o z-50 bg-black w-screen h-screen flex justify-center items-center p-10'>
+                <div className='max-w-xl '>
+                  <p className='text-purple-400 text-lg'>By proceeding with this action, all data including the account will be deleted from the website and will never be recovered again.</p>
+                  <div className='flex flex-row gap-5 w-full mt-4'>
+                    <button onClick={() => setAlert(false)} className='bg-transparent p-2 rounded-lg transition-all font-bold cursor-pointer hover:bg-sky-500 border-b-2 border-sky-500 flex flex-row gap-2 items-center w-max'>Cancel</button>
+                    <button onClick={() => deleteBooktroveAcount()} className='bg-transparent p-2 rounded-lg transition-all font-bold cursor-pointer hover:bg-red-600 border-b-2 border-red-600 flex flex-row gap-2 items-center w-max'>Delete</button>
                   </div>
                 </div>
               </div>
