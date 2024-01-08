@@ -13,6 +13,16 @@ interface IUserData {
   dateofbirth: Date;
 }
 
+interface userDataOptional {
+  fullname?: string;
+  username?: string;
+  gender?: string;
+  email?: string;
+  password?: string;
+  dateofbirth?: Date | string;
+}
+
+
 interface ISignInData {
   email: string,
   password: string
@@ -64,10 +74,18 @@ export const getDataUser = async (id: number, jwt: string) => {
 };
 
 export const deleteUser = async (id: number, jwt: string) => { 
-  console.log(id);
   
   const data = await api
     .delete(`/user/${id}` , { headers: config('DELETE', jwt)})
+    .then((response) => response.data)
+    .catch((error) => error);
+  return data;
+};
+
+export const saveData = async (id: number, jwt: string, userData: userDataOptional) => { 
+  
+  const data = await api
+    .put(`/user/${id}`, userData, { headers: config('PUT', jwt)})
     .then((response) => response.data)
     .catch((error) => error);
   return data;

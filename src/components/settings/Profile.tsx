@@ -7,7 +7,7 @@ import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { BsFillTrashFill } from 'react-icons/bs';
 import ButtonComponent from '../navbar/ButtonComponent';
-import { deleteUser } from '@/api/user';
+import { deleteUser, saveData } from '@/api/user';
 
 interface IFormInput {
   fullname: string;
@@ -31,7 +31,7 @@ interface IFormInputOptional {
 export default function Profile() {
   const [showPassword, setShowPassword] = useState(false);
   const [dateError, setDateError] = useState(false)
-  const userData: IFormInput | undefined = localStorage.getItem('userInfo') ? JSON.parse(String(localStorage.getItem('userInfo'))) : undefined;
+  const [userData, setUserData] = useState<IFormInput | undefined>(localStorage.getItem('userInfo') ? JSON.parse(String(localStorage.getItem('userInfo'))) : undefined);
   const [newData, setNewData] = useState<IFormInputOptional | undefined>({});
   const [saveOn, setSaveOn] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -44,11 +44,19 @@ export default function Profile() {
     formState: { errors }
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     
-    console.log(newData);
-    
-    
+    const jwt = localStorage.getItem('jwt_token');
+
+    if (newData && Object.keys(newData).length > 0 && userData && jwt) {
+      const req = await saveData(Number(userData.id), jwt, newData);
+      localStorage.removeItem('userInfo');
+      localStorage.setItem('userInfo', JSON.stringify({...data, id: userData.id}));
+      setSaveOn(false);
+      setNewData(undefined);
+      setUserData(JSON.parse(String(localStorage.getItem('userInfo'))));
+    }
+  
   };
 
   const logOut = () => {
@@ -228,7 +236,7 @@ export default function Profile() {
                       if (String(event.target.value).slice(0, 10) !== String(userData.dateofbirth).slice(0, 10)) {
                         setNewData((prevState) => {
                           if (prevState) {
-                            const newState = {...prevState, dateofbirth: new Date(String(event.target.value))}
+                            const newState = {...prevState, dateofbirth: String(event.target.value)}
                             return newState
                           }
                         });
@@ -257,7 +265,7 @@ export default function Profile() {
               <label htmlFor="email">Edit your Email:</label>
               <input
                 id="email"
-                defaultValue={'miqueias@gmail.com'}
+                defaultValue={userData ? userData.email : ''}
                 className="text-black text-sm p-1 rounded-md"
                 {...register('email', {
                   maxLength: {
@@ -305,7 +313,7 @@ export default function Profile() {
                   placeholder="Password"
                   type={showPassword ? 'text' : 'password'}
                   id="password"
-                  defaultValue={'MIKE007seagain99.22'}
+                  defaultValue={userData ? userData.password : ''}
                   {...register('password', {
                     maxLength: {
                       value: 30,
