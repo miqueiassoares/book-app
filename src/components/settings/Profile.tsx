@@ -8,26 +8,31 @@ import { BsFillTrashFill } from 'react-icons/bs';
 import ButtonComponent from '../navbar/ButtonComponent';
 
 interface IFormInput {
-  fullName: string;
+  fullname: string;
   username: string;
   gender: string;
   email: string;
   password: string;
-  age: number;
+  dateofbirth: Date | string;
 }
 
-const prevData = {
-  fullName: 'Miquéias Castro',
-  username: 'mika01',
-  gender: 'male',
-  email: 'miqueias@gmail.com',
-  password: 'MIKE007seagain99.22',
-  age: 17
-};
+interface IFormInputOptional {
+  fullname?: string;
+  username?: string;
+  gender?: string;
+  email?: string;
+  password?: string;
+  dateofbirth?: Date | string;
+}
 
 export default function Profile() {
   const [showPassword, setShowPassword] = useState(false);
-  const userData = localStorage.getItem('userInfo') ? JSON.parse(String(localStorage.getItem('userInfo'))) : undefined;
+  const [dateError, setDateError] = useState(false)
+  const userData: IFormInput | undefined = localStorage.getItem('userInfo') ? JSON.parse(String(localStorage.getItem('userInfo'))) : undefined;
+  const [newData, setNewData] = useState<IFormInputOptional | undefined>({});
+  const [saveOn, setSaveOn] = useState(false);
+  const [alert, setAlert] = useState(false);
+
 
   const {
     register,
@@ -36,8 +41,27 @@ export default function Profile() {
   } = useForm<IFormInput>();
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    console.log(data);
+    
+    console.log(newData);
+    
+    
   };
+
+  const logOut = () => {
+    localStorage.clear();
+    location.reload();
+  }
+  
+  function dateValidation(dateofbirth: Date) {
+    const userDate = new Date(dateofbirth);
+    
+    const dateNow = new Date();
+    
+    const diff = Number(dateNow) - Number(userDate);
+    const age = Math.floor(diff / (1000 * 60 * 60 * 24 * 365.25));
+    
+    return age;
+  }
 
   return (
     <>
@@ -52,9 +76,9 @@ export default function Profile() {
               <label htmlFor="name">Edit your full name:</label>
               <input
                 id="name"
-                defaultValue={'Miquéias Castro'}
+                defaultValue={userData.fullname}
                 className="text-black text-sm p-1 rounded-md"
-                {...register('fullName', {
+                {...register('fullname', {
                   maxLength: {
                     value: 100,
                     message: 'This field must have a maximum of 100 characters'
@@ -68,17 +92,35 @@ export default function Profile() {
                     message: 'Full name must be valid.'
                   }
                 })}
+                onChange={(event) => {
+                  if (String(event.target.value) !== String(userData.fullname)) {
+                    setNewData((prevState) => {
+                      if (prevState) {
+                        const newState = {...prevState, fullname: String(event.target.value)}
+                        return newState
+                      }
+                    });
+                    setSaveOn(true);
+                    
+                  } else if (newData && newData.fullname) {
+                    delete newData.fullname
+                    if (Object.keys(newData).length < 1) {
+                      setSaveOn(false);
+                    }
+                  }
+                  
+                }}
                 placeholder="Full name"
               />
-              {errors.fullName && (
+              {errors.fullname && (
                 <span className="text-xs text-red-800 underline font-bold">
-                  {errors.fullName?.message}
+                  {errors.fullname?.message}
                 </span>
               )}
               <label htmlFor="username">Edit your username:</label>
               <input
                 id="username"
-                defaultValue={'mika01'}
+                defaultValue={userData.username}
                 className="text-black text-sm p-1 rounded-md"
                 {...register('username', {
                   maxLength: {
@@ -95,6 +137,23 @@ export default function Profile() {
                       'Username must be valid. Username must contain letters and numbers.'
                   }
                 })}
+                onChange={(event) => {
+                  if (String(event.target.value) !== String(userData.username)) {
+                    setNewData((prevState) => {
+                      if (prevState) {
+                        const newState = {...prevState, username: String(event.target.value)}
+                        return newState
+                      }
+                    });
+                    setSaveOn(true);
+                  } else if (newData && newData.username) {
+                    delete newData.username
+                    if (Object.keys(newData).length < 1) {
+                      setSaveOn(false);
+                    }
+                  }
+                  
+                }}
                 placeholder="Username"
               />
               {errors.username && (
@@ -108,42 +167,72 @@ export default function Profile() {
                   <select
                     id="gender"
                     {...register('gender')}
+                    onChange={(event) => {
+                      if (String(event.target.value) !== String(userData.gender).toLowerCase()) {
+                        setNewData((prevState) => {
+                          if (prevState) {
+                            const newState = {...prevState, gender: String(event.target.value)}
+                            return newState
+                          }
+                        });
+                        
+                        setSaveOn(true);
+                      } else if (newData && newData.gender) {
+                        delete newData.gender
+                        if (Object.keys(newData).length < 1) {
+                          setSaveOn(false);
+                        }
+                      }
+                      
+                    }}
                     className="text-black text-sm p-1 rounded-md"
                   >
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
+                    <option selected={userData.gender.toLowerCase() === "male"} value="male">Male</option>
+                    <option selected={userData.gender.toLowerCase() === "female"} value="female">Female</option>
                   </select>
                 </div>
                 <div className="flex flex-col">
-                  <label htmlFor="age">Edit your Age:</label>
+                  <label htmlFor="dateofbirth">Edit your date of birth:</label>
                   <input
-                    id="age"
-                    defaultValue={17}
+                    id="dateofbirth"
+                    defaultValue={String(userData?.dateofbirth).slice(0, 10)}
                     className="text-black text-sm p-1 rounded-md"
-                    {...register('age', {
-                      max: {
-                        value: 120,
-                        message: 'Please Edit a valid age.'
-                      },
-                      min: {
-                        value: 13,
-                        message:
-                          'You must be over 13 years old to register on this platform.'
-                      },
-                      pattern: {
-                        value: /^[0-9]+$/,
-                        message: 'Age must be valid.'
+                    {...register('dateofbirth')}
+                    onChange={(event) => {
+                      const age = dateValidation(new Date(event.target.value));
+                      
+                      if (age < 13 || age > 119) {
+                        setDateError(true)
+                      } else {
+                        setDateError(false)
                       }
-                    })}
-                    type="number"
-                    placeholder="Age"
+
+                      if (String(event.target.value).slice(0, 10) !== String(userData.dateofbirth).slice(0, 10)) {
+                        setNewData((prevState) => {
+                          if (prevState) {
+                            const newState = {...prevState, dateofbirth: new Date(String(event.target.value))}
+                            return newState
+                          }
+                        });
+                        
+                        setSaveOn(true);
+                      } else if (newData && newData.dateofbirth) {
+                        delete newData.dateofbirth
+                        
+                        if (Object.keys(newData).length < 1) {
+                          setSaveOn(false);
+                        }
+                      }
+                      
+                    }}
+                    type="date"
+                    placeholder="Your age"
                   />
-                  {errors.age && (
-                    <span className="text-xs text-red-800 underline font-bold">
-                      {errors.age?.message}
-                    </span>
-                  )}
+                {dateError && (
+                  <span className="text-xs text-red-800 underline font-bold">
+                    This date must be valid
+                  </span>
+                )}
                 </div>
               </div>
 
@@ -167,6 +256,23 @@ export default function Profile() {
                     message: 'Email must be valid.'
                   }
                 })}
+                onChange={(event) => {
+                  if (String(event.target.value) !== String(userData.email)) {
+                    setNewData((prevState) => {
+                      if (prevState) {
+                        const newState = {...prevState, email: String(event.target.value)}
+                        return newState
+                      }
+                    });
+                    setSaveOn(true);      
+                  } else if (newData && newData.email) {
+                    delete newData.email
+                    
+                    if (Object.keys(newData).length < 1) {
+                      setSaveOn(false);
+                    }
+                  }
+                }}
                 placeholder="Email"
               />
               {errors.email && (
@@ -192,6 +298,22 @@ export default function Profile() {
                       message: 'This field must have at least 6 characters.'
                     }
                   })}
+                  onChange={(event) => {
+                    if (String(event.target.value) !== String(userData.password)) {
+                      setNewData((prevState) => {
+                        if (prevState) {
+                          const newState = {...prevState, password: String(event.target.value)}
+                          return newState
+                        }
+                      });
+                      setSaveOn(true);
+                    } else if (newData && newData.password) {
+                      delete newData.password
+                      if (Object.keys(newData).length < 1) {
+                        setSaveOn(false);
+                      }
+                    }
+                  }}
                 />
                 <button
                   type="button"
@@ -218,13 +340,15 @@ export default function Profile() {
               <div className="flex flex-row gap-3  mt-4 semb:flex-wrap">
                 <button
                   type="submit"
-                  className="border-b-2 transition-all  border-purple-500 bg-transparent hover:bg-purple-500 p-2 rounded-lg w-36 font-bold cursor-pointer"
+                  className={`border-b-2 transition-allf  border-purple-500   p-2 rounded-lg w-36 font-bold cursor-pointer ${saveOn === true ? 'bg-purple-500 hover:bg-transparent' : 'hover:bg-purple-500 bg-transparent'}`}
+                  
                 >
                   Save
                 </button>
                 <button
                   type="button"
                   className="bg-transparent p-2 rounded-lg transition-all font-bold cursor-pointer hover:bg-sky-500 border-b-2 border-sky-500 flex flex-row gap-2 items-center w-max"
+                  onClick={() => logOut()}
                 >
                   <span>log out</span>
                   <BiLogOut />
@@ -232,17 +356,31 @@ export default function Profile() {
                 <button
                   type="button"
                   className="bg-transparent p-2 rounded-lg transition-all font-bold cursor-pointer border-b-2 border-red-500 hover:bg-red-500 flex flex-row gap-2 items-center w-max"
+                  onClick={() => {
+                    setAlert(true);
+                  }}
                 >
                   <span>Delete account</span>
                   <BsFillTrashFill />
                 </button>
               </div>
             </form>
+            {alert && (
+              <div className='absolute top-0 left-0 o z-50 bg-black w-screen h-screen flex justify-center items-center'>
+                <div>
+                  <p>By proceeding with this action, all data including the account will be deleted from the website and will never be recovered again.</p>
+                  <div>
+                    <button onClick={() => setAlert(false)}>Cancel</button>
+                    <button>Delete</button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         ) : 
         (
-          <div className='flex flex-col gap-1 items-center w-full text-purple-400'>
-            <ButtonComponent typeB='signup' />
+          <div className='flex flex-row gap-3 justify-center w-full text-purple-400'>
+            <ButtonComponent typeB='signup'/>
             or
             <ButtonComponent typeB='signin' />
           </div>
